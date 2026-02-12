@@ -5,8 +5,6 @@ import { mustGetEnv, slugify, timestamp, writeJSON, writeText } from "./utils.js
 export async function webSearch(query: string) {
   const client = new OpenAI({ apiKey: mustGetEnv("OPENAI_API_KEY") });
 
-  // Web search is enabled via the tools array in the Responses API.
-  // Docs: Web search tool for Responses API.
   const resp = await client.responses.create({
   model: "gpt-4.1-mini",
   input: [
@@ -31,7 +29,6 @@ export async function webSearch(query: string) {
 
   writeJSON(jsonPath, resp);
 
-  // Extract any text output for quick reading (best-effort)
   const textParts: string[] = [];
   for (const item of resp.output ?? []) {
     if (item.type === "message") {
